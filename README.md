@@ -101,10 +101,10 @@ Solucion Propuesta:
     │   ├── main.tf
     │   ├── output.tf
     │   └── variables.tf
-    ├── ses
-    │   ├── main.tf
-    │   ├── output.tf
-    │   └── variables.tf
+    └── ses
+        ├── main.tf
+        ├── output.tf
+        └── variables.tf
 ```
 
 La estrategia implementada en Terraform tiene 3 tiers: 
