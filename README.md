@@ -52,7 +52,7 @@ Def updateSecret
 
 <img src="/images/7updatesecret.png" alt="us" width="700"/>
 
-Def sendEmail (modificar screen)
+Def sendEmail
 
 <img src="/images/8sendemail.png" alt="se" width="700"/>
 
@@ -70,7 +70,7 @@ Modulo de terraform para deployar una solucion para poder rotar las Access Key d
 
 ### Diagrama de la solucion implementada
 
-Solucion Propuesta:  (modificar screen)
+Solucion Propuesta: 
 
 ![solution](/images/access-key-rotation.png)
 

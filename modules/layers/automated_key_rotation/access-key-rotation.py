@@ -175,7 +175,7 @@ def updateSecret(username, new_key):
 def sendMail(mail, username):
     url = "https://console.aws.amazon.com/secretsmanager/home?region=us-east-1#!/listSecrets"
 
-    SENDER = "admin@inswitch.com"
+    SENDER = "admin@xx" #UPDATE SENDER
     CHARSET = "UTF-8"
     SUBJECT = "Sus Access Keys han sido rotadas de forma automática"
     RECIPIENT = mail
