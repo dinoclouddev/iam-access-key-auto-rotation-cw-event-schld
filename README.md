@@ -16,27 +16,27 @@ Librerias y clientes de boto3 a usar
 
 <img src="/images/carbon.png" alt="libimg" width="500"/>
 
-Variables para setear los usuarios que se deben incluir/excluir en este proceso
-
-<img src="/images/globalenvs.png" alt="genvs" width="700"/>
-
-Handler de la funcion (modificar screen)
+Handler de la funcion
 
 <img src="/images/handler.png" alt="handler" width="700"/>
 
-Def getUser (modificar screen)
+Def list_access_key
 
-<img src="/images/1getuser.png" alt="gu" width="700"/>
+<img src="/images/1listkeys.png" alt="gu" width="700"/>
 
-Def disableKey (modificar screen)
+time_diff
+
+<img src="/images/1btime_diff.png" alt="td" width="700"/>
+
+Def disableKey
 
 <img src="/images/2disablekey.png" alt="dk" width="700"/>
 
-Def deleteKey (modificar screen)
+Def deleteKey
 
 <img src="/images/3deletekey.png" alt="dtk" width="700"/>
 
-Def createKey (modificar screen)
+Def createKey
 
 <img src="/images/4createkey.png" alt="ck" width="700"/>
 
@@ -72,7 +72,7 @@ Modulo de terraform para deployar una solucion para poder rotar las Access Key d
 
 Solucion Propuesta:  (modificar screen)
 
-![solution](/images/Access_Keys_Automated_Rotation.jpg)
+![solution](/images/access-key-rotation.png)
 
 1. Se configura un CloudWatch Event rule con un cron para que se triggeree automaticamente el primer dia de cada mes (0 8 1 * ? *), esta regla tiene como target una función Lambda que es la encargada de toda la lógica de rotación de keys.
 
