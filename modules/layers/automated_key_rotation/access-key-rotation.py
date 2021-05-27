@@ -9,7 +9,7 @@ sm_client = boto3.client('secretsmanager')
 
 def lambda_handler(event, context):
     
-    exclude_users = ["ins-m8jgh-aws-ebs-csi-driver-operator-mcxls", "ins-m8jgh-cloud-credential-operator-iam-ro-zw67b", "ins-m8jgh-cloud-credential-operator-s3-9ks55", "ins-m8jgh-openshift-image-registry-wc2sh", "ins-m8jgh-openshift-ingress-h6kgf", "ins-m8jgh-openshift-machine-api-aws-zdjdq", "inswitch", "ses-smtp-jira-inswitch.20210119-155623"]
+    exclude_users = [""] 
     
     include_users = [""]
 
@@ -110,7 +110,7 @@ def getUserMail(username):
     )
     
     for tag in tags['Tags']:
-        if tag['Key'] == 'mail':
+        if tag['Key'] == 'email':
             mail = tag['Value']
             return mail
 
