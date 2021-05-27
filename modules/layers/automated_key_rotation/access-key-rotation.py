@@ -22,7 +22,7 @@ def lambda_handler(event, context):
             users.append(user['UserName'])
 
     for user in users:
-        user_iam_details=list_access_key(user=user, days_filter=0)
+        user_iam_details=list_access_key(user=user, days_filter=90) # days_filter for testing=0, for prod=90
         for _ in user_iam_details:
             disable_key(access_key=_['AccessKeyId'], username=_['UserName'], status=_['status'])
             delete_key(access_key=_['AccessKeyId'], username=_['UserName'], status=_['status'])
@@ -42,7 +42,7 @@ def lambda_handler(event, context):
     
     # return {
     #     'statusCode': 200,
-    #     'body': list_access_key(user=user,days_filter=0)
+    #     'body': list_access_key(user=user,days_filter=90)
     # }
 
     return ""
