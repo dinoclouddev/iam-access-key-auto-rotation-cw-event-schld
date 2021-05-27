@@ -86,25 +86,27 @@ Solucion Propuesta:
 │       ├── main.tf
 │       └── variables.tf
 |       └── terraform.tfvars
-├── layer
-│   └── automated_key_rotation
-│       ├── access-key-rotation.py
-│       ├── main.tf
-│       ├── output.tf
-│       └── variables.tf
-└── aws
-    ├── cloudwatch
-    │   ├── main.tf
-    │   ├── output.tf
-    │   └── variables.tf
-    ├── lambda
-    │   ├── main.tf
-    │   ├── output.tf
-    │   └── variables.tf
-    └── ses
-        ├── main.tf
-        ├── output.tf
-        └── variables.tf
+└── modules
+    └── layers
+    │   └── automated_key_rotation
+    │       ├── access-key-rotation.py
+    │       ├── main.tf
+    │       ├── output.tf
+    │       └── variables.tf
+    └── aws
+        ├── cloudwatch
+        │   ├── main.tf
+        │   ├── output.tf
+        │   └── variables.tf
+        ├── lambda
+        │   ├── main.tf
+        │   ├── output.tf
+        │   └── variables.tf
+        └── ses
+            ├── main.tf
+            ├── output.tf
+            └── variables.tf
+
 ```
 
 La estrategia implementada en Terraform tiene 3 tiers: 
