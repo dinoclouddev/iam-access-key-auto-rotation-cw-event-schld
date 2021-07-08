@@ -24,19 +24,19 @@ def lambda_handler(event, context):
     for user in users:
         user_iam_details=list_access_key(user=user, days_filter=90) # days_filter for testing=0, for prod=90
         for _ in user_iam_details:
-            disable_key(access_key=_['AccessKeyId'], username=_['UserName'], status=_['status'])
-            delete_key(access_key=_['AccessKeyId'], username=_['UserName'], status=_['status'])
+            print(_)
+            disable_key(access_key=_['AccessKeyId'], username=_['UserName'])
+            delete_key(access_key=_['AccessKeyId'], username=_['UserName'])
+            access_key_details = create_key(username=user)
 
-        access_key_details = create_key(username=user)
+            try:
+                createSecret(user, access_key_details)
+            except Exception as e: 
+                updateSecret(user, access_key_details)
+            
+            mail = getUserMail(user)
 
-        try:
-            createSecret(user, access_key_details)
-        except Exception as e: 
-            updateSecret(user, access_key_details)
-        
-        mail = getUserMail(user)
-
-        sendMail(mail, user)
+            sendMail(mail, user)
 
     #####
     
@@ -84,24 +84,27 @@ def create_key(username):
 
     return access_key_details
 
-def disable_key(access_key, username, status):
+def disable_key(access_key, username):
     try:
-        if (status == "Active"):
-            iam_client.update_access_key(UserName=username, AccessKeyId=access_key, Status="Inactive")
-            print(access_key + " has been disabled.")
-            return access_key
+        iam_client.update_access_key(
+            AccessKeyId=access_key,
+            Status='Inactive',
+            UserName=username
+        )
+        print(access_key + " has been disabled.")
     except ClientError as e:
         print("The access key with id %s cannot be found" % access_key)
 
-def delete_key(access_key, username, status):
+def delete_key(access_key, username):
     try:
-        if (status == "Inactive"):
-            iam_client.delete_access_key(UserName=username, AccessKeyId=access_key)
-            print (access_key + " has been deleted.")
-            return access_key
+        iam_client.delete_access_key(
+            AccessKeyId=access_key,
+            UserName=username
+        )
+        print (access_key + " has been deleted.")
     except ClientError as e:
         print("The access key with id %s cannot be found" % access_key)
-     
+    
 # Busca el mail del usuario en el tag mail
 def getUserMail(username):
     
@@ -175,7 +178,7 @@ def updateSecret(username, new_key):
 def sendMail(mail, username):
     url = "https://console.aws.amazon.com/secretsmanager/home?region=us-east-1#!/listSecrets"
 
-    SENDER = "admin@xx" #UPDATE SENDER
+    SENDER = "admin@xx" #TODO: UPDATE SENDER
     CHARSET = "UTF-8"
     SUBJECT = "Sus Access Keys han sido rotadas de forma automática"
     RECIPIENT = mail
@@ -186,6 +189,7 @@ def sendMail(mail, username):
     <body>
     <h3>Username {username}</h3>
     <p>
+        Se han rotado sus AccessKeys automaticamente.
         Visualice su nueva clave en AWS Secret Manager: <a href={url}>{url}</a> através del secreto: <b>/aws/iam/credentials/{username}</b>.
         <br/><br/>
         <i>Este email fue enviado de forma automática a través de Amazon SES</i>.
@@ -194,26 +198,27 @@ def sendMail(mail, username):
     </html>
                 """.format(**locals())
     
-
-    ses_client.send_email(
-        Destination={
-            'ToAddresses': [
-                RECIPIENT,
-            ],
-        },
-        Message={
-            'Body': {
-                'Html': {
-                    'Charset': CHARSET,
-                    'Data': BODY_HTML,
+    try: 
+        ses_client.send_email(
+            Destination={
+                'ToAddresses': [
+                    RECIPIENT,
+                ],
+            },
+            Message={
+                'Body': {
+                    'Html': {
+                        'Charset': CHARSET,
+                        'Data': BODY_HTML,
+                    },
+                    
                 },
-                
+                'Subject': {
+                    'Charset': CHARSET,
+                    'Data': SUBJECT,
+                },
             },
-            'Subject': {
-                'Charset': CHARSET,
-                'Data': SUBJECT,
-            },
-        },
-        Source=SENDER,
-
-    )
+            Source=SENDER,
+        )
+    except ClientError as e:
+        print("Error: email not validated")
